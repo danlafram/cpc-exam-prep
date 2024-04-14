@@ -1,14 +1,10 @@
-import { useEffect, useState, useContext } from 'react';
-import { StyleSheet, Text, View, Pressable } from 'react-native';
-import axios from 'axios';
+import { useContext } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { CertificationContext } from '../contexts/CertificationContext';
 
-// TODO: move chapters, questions to top level context
 export default function HomeScreen({ navigation }) {
 
   const data = useContext(CertificationContext)
-
-  // console.log('data', data?.questions[0])
 
   return (
     <View style={styles.container}>
@@ -16,16 +12,18 @@ export default function HomeScreen({ navigation }) {
         <Text style={styles.titleText}>Certified Medical Biller Training</Text>
         <Text style={styles.subTitleText}>Use these questions to prep for your certification exam</Text>
       </View>
+      <View style={styles.chapterTitleContainer}>
+        <Text style={styles.chapterTitleText}>Chapters</Text>
+      </View>
       <View style={styles.chaptersContainer}>
         {
           data?.chapters?.length && data?.chapters.map((chapter, index) =>
-            <Pressable style={styles.button} key={index}
+            <Pressable
+              key={chapter.id}
+              style={styles.button}
               onPress={() => navigation.navigate('Questions', {
-                selectedChapterIndex: index,
-                // chapters: data.chapters,
-                // questions: data.questions[index] // This is probably wrong. Use context here.
-              })}
-            >
+              selectedChapterIndex: index,
+            })}>
               <Text style={styles.text}>{chapter.name}</Text>
             </Pressable>
           )
@@ -46,41 +44,55 @@ const styles = StyleSheet.create({
     padding: 10,
     flex: 1,
     width: '100%',
-    backgroundColor: 'grey',
+    backgroundColor: '#31304d',
     justifyContent: 'space-evenly'
+  },
+  chapterTitleContainer: {
+    padding: 10,
+    backgroundColor: '#f0ece5',
+    width: '100%',
+    alignItems: 'center'
+  },
+  chapterTitleText: {
+    fontSize: 25,
+    // fontWeight: 'bold'
   },
   chaptersContainer: {
     flex: 3,
-    backgroundColor: 'red',
+    backgroundColor: '#f0ece5',
     width: '100%',
+    height: '100%',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     alignItems: 'center',
-    justifyContent: 'center',
-    justifyContent: 'space-evenly'
+    justifyContent: 'space-around'
   },
   titleText: {
     paddingTop: 20,
     margin: 5,
-    fontSize: 30
+    fontSize: 30,
+    color: 'white',
   },
   subTitleText: {
-    fontSize: 20
+    fontSize: 20,
+    color: 'white',
   },
   button: {
-    margin: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginTop: 30,
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 4,
     elevation: 3,
-    backgroundColor: 'black',
-    width: '50%'
+    backgroundColor: '#f8f6f2',
+    width: '45%',
+    height: '20%',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   text: {
-    fontSize: 16,
-    lineHeight: 21,
+    fontSize: 15,
+    textAlign: 'center',
     fontWeight: 'bold',
-    letterSpacing: 0.25,
-    color: 'white',
+    color: '#31304d',
   }
 });

@@ -1,11 +1,14 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+// Context imports
 import { CertificationProvider } from './contexts/CertificationContext';
 
+// Pages imports
 import HomeScreen from "./components/HomeScreen";
 import QuestionScreen from "./components/QuestionScreen";
 import EndOfChapterScreen from "./components/EndOfChapterScreen";
+
 
 const Stack = createNativeStackNavigator();
 

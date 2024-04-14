@@ -1,21 +1,19 @@
-import { useEffect, useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { StyleSheet, Text, View, Pressable } from 'react-native';
 import { CertificationContext } from '../contexts/CertificationContext';
 
-// TODO: move chapters, questions to top level context
 export default function QuestionScreen({ route, navigation }) {
     const { selectedChapterIndex } = route.params;
 
     const data = useContext(CertificationContext)
 
-    const [chapter, setChapter] = useState(data.chapters[selectedChapterIndex]);
     const [questionIndex, setQuestionIndex] = useState(0);
     const [questions, setQuestions] = useState(data.questions[selectedChapterIndex]);
     const [answers, setAnswers] = useState(data.questions[selectedChapterIndex][0].answers);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [showNextButton, setShowNextButton] = useState(false);
     const [resultText, setResultText] = useState(null);
-    const [results, setResults] = useState({});
+    const [correctAnswers, setCorrectAnswers] = useState(0)
 
     // This function handles the user clicking on an answer
     // We track the index of the anwser tracked here so we can use it to cross-check with the answers array
@@ -32,6 +30,7 @@ export default function QuestionScreen({ route, navigation }) {
             // Right answer
             setShowNextButton(true)
             setResultText("Correct!")
+            setCorrectAnswers(correctAnswers + 1)
         } else {
             // Wrong answer
             setResultText("Oops, not quite!")
@@ -43,18 +42,17 @@ export default function QuestionScreen({ route, navigation }) {
     // When its the last question of the chapter, 
     // we show the results page and move to the next chapter or allow them to repeat the chapter
     const handleNextQuestion = () => {
-        // TODO: Logic here not to increment if last question of the chapter.
         // When last question, move on to next chapter or show results page.
         setShowNextButton(false)
         setSelectedAnswer(null)
         setResultText(null)
-        if(questions.length === questionIndex + 1){
+        if (questions.length === questionIndex + 1) {
             // Show another screen and move to next chapter
             setAnswers(null)
             setQuestionIndex(0)
             navigation.navigate('Results', {
                 currentChapterIndex: selectedChapterIndex,
-                results
+                correctAnswers
             })
         } else {
             setQuestionIndex(questionIndex + 1)
@@ -65,6 +63,7 @@ export default function QuestionScreen({ route, navigation }) {
     return (
         <View style={styles.container}>
             <View style={styles.questionContainer}>
+            <Text style={styles.questionTrackerText}>{data?.chapters[selectedChapterIndex].name}</Text>
                 <Text style={styles.questionTrackerText}>Question {questionIndex + 1} of {questions?.length ? questions?.length : 'loading...'}</Text>
                 <Text style={styles.questionText}>{questions?.length ? questions[questionIndex]?.question : "loading..."}</Text>
             </View>
@@ -72,14 +71,13 @@ export default function QuestionScreen({ route, navigation }) {
 
             <View style={styles.answersContainer}>
                 {answers?.length && answers.map((answer, index) =>
-                    <Pressable key={index} style={styles.button} onPress={() => handleAnswer(index)}>
+                    <Pressable key={index} style={index === selectedAnswer ? styles.selectedButton : styles.button } onPress={() => handleAnswer(index)}>
                         <Text style={styles.text}>{answer.answer}</Text>
                     </Pressable>
                 )}
             </View>
 
             <View style={styles.resultsContainer}>
-                {/* TODO: Add text feedback with success or 'oops' wrong answer etc. */}
                 {
                     resultText && <Text>{resultText}</Text>
                 }
@@ -99,22 +97,23 @@ export default function QuestionScreen({ route, navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#f0ece5',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'flex-start'
     },
     questionContainer: {
-        flex: 1,
+        flex: 2,
         width: '100%',
+        height: '100%',
         alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'grey',
+        justifyContent: 'flex-start',
+        backgroundColor: '#f0ece5',
         padding: 5,
     },
     answersContainer: {
         flex: 3,
-        backgroundColor: 'red',
-        paddingTop: 20,
+        backgroundColor: '#f0ece5',
+        // paddingTop: 20,
         width: '100%',
         alignItems: 'center',
         justifyContent: 'flex-start',
@@ -122,18 +121,29 @@ const styles = StyleSheet.create({
     resultsContainer: {
         alignItems: 'center',
         padding: 20,
-        backgroundColor: 'red',
+        backgroundColor: '#f0ece5',
         width: '100%'
     },
     button: {
         margin: 5,
-        alignItems: 'center',
+        alignItems: 'flex-start',
         justifyContent: 'center',
-        paddingVertical: 12,
+        paddingVertical: 14,
         paddingHorizontal: 32,
         borderRadius: 4,
         elevation: 3,
-        backgroundColor: 'black',
+        backgroundColor: '#f8f6f2',
+        width: '90%'
+    },
+    selectedButton: {
+        margin: 5,
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        paddingVertical: 14,
+        paddingHorizontal: 32,
+        borderRadius: 4,
+        elevation: 3,
+        backgroundColor: '#ddd9d5',
         width: '90%'
     },
     nextButton: {
@@ -142,23 +152,31 @@ const styles = StyleSheet.create({
         paddingHorizontal: 32,
         borderRadius: 4,
         elevation: 3,
-        backgroundColor: 'white',
-        width: '50%'
+        backgroundColor: '#31304d',
+        width: '90%',
+        alignItems: 'center',
+        alignContent: 'center'
     },
     questionText: {
         fontSize: 25,
+        letterSpacing: 0.50,
+        color: '#01061f',
     },
     questionTrackerText: {
         fontSize: 15,
+        letterSpacing: 0.50,
         marginBottom: 10,
+        color: '#01061f'
     },
     text: {
-        fontSize: 15,
-        letterSpacing: 0.25,
-        color: 'white',
+        color: '#01061f',
+        fontSize: 16,
+        letterSpacing: 0.50,
+        // fontWeight: 'bold'
     },
     nextButtonText: {
+        fontSize: 18,
         alignItems: 'center',
-        color: 'black',
+        color: 'white',
     }
 });

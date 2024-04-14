@@ -19,7 +19,7 @@ export default function App() {
         <Stack.Navigator>
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Questions" component={QuestionScreen} />
-          <Stack.Screen name="Results" component={EndOfChapterScreen} />
+          <Stack.Screen options={{ headerShown: false }} name="Results" component={EndOfChapterScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </CertificationProvider>

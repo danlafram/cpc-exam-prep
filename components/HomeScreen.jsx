@@ -1,6 +1,17 @@
 import { useContext } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { CertificationContext } from '../contexts/CertificationContext';
+import { FontAwesome5 } from '@expo/vector-icons';
+
+const fontAwesome5Icons = [
+  "list",
+  "pencil-ruler",
+  "hospital-symbol",
+  "receipt",
+  "money-bill",
+  "file-code"
+]
+
 
 export default function HomeScreen({ navigation }) {
 
@@ -24,6 +35,7 @@ export default function HomeScreen({ navigation }) {
               onPress={() => navigation.navigate('Questions', {
               selectedChapterIndex: index,
             })}>
+              <FontAwesome5 name={fontAwesome5Icons[index]} size={26} color="black" />
               <Text style={styles.text}>{chapter.name}</Text>
             </Pressable>
           )
@@ -36,7 +48,7 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#31304d',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -49,17 +61,17 @@ const styles = StyleSheet.create({
   },
   chapterTitleContainer: {
     padding: 10,
-    backgroundColor: '#f0ece5',
+    backgroundColor: '#e3e1de',
     width: '100%',
-    alignItems: 'center'
+    alignItems: 'center',
+    borderTopLeftRadius: 35,
   },
   chapterTitleText: {
-    fontSize: 25,
-    // fontWeight: 'bold'
+    fontSize: 25
   },
   chaptersContainer: {
     flex: 3,
-    backgroundColor: '#f0ece5',
+    backgroundColor: '#e3e1de',
     width: '100%',
     height: '100%',
     flexDirection: 'row',
@@ -87,10 +99,10 @@ const styles = StyleSheet.create({
     width: '45%',
     height: '20%',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'space-around',
   },
   text: {
-    fontSize: 15,
+    fontSize: 16,
     textAlign: 'center',
     fontWeight: 'bold',
     color: '#31304d',

@@ -63,7 +63,7 @@ export default function QuestionScreen({ route, navigation }) {
     return (
         <View style={styles.container}>
             <View style={styles.questionContainer}>
-            <Text style={styles.questionTrackerText}>{data?.chapters[selectedChapterIndex].name}</Text>
+                <Text style={styles.questionTrackerText}>{data?.chapters[selectedChapterIndex].name}</Text>
                 <Text style={styles.questionTrackerText}>Question {questionIndex + 1} of {questions?.length ? questions?.length : 'loading...'}</Text>
                 <Text style={styles.questionText}>{questions?.length ? questions[questionIndex]?.question : "loading..."}</Text>
             </View>
@@ -71,7 +71,7 @@ export default function QuestionScreen({ route, navigation }) {
 
             <View style={styles.answersContainer}>
                 {answers?.length && answers.map((answer, index) =>
-                    <Pressable key={index} style={index === selectedAnswer ? styles.selectedButton : styles.button } onPress={() => handleAnswer(index)}>
+                    <Pressable key={index} style={index === selectedAnswer ? styles.selectedButton : styles.button} onPress={() => handleAnswer(index)}>
                         <Text style={styles.text}>{answer.answer}</Text>
                     </Pressable>
                 )}
@@ -97,7 +97,7 @@ export default function QuestionScreen({ route, navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f0ece5',
+        backgroundColor: '#e3e1de',
         alignItems: 'center',
         justifyContent: 'flex-start'
     },
@@ -106,13 +106,13 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         alignItems: 'center',
-        justifyContent: 'flex-start',
-        backgroundColor: '#f0ece5',
+        justifyContent: 'space-evenly',
+        backgroundColor: '#e3e1de',
         padding: 5,
     },
     answersContainer: {
-        flex: 3,
-        backgroundColor: '#f0ece5',
+        flex: 4,
+        backgroundColor: '#e3e1de',
         // paddingTop: 20,
         width: '100%',
         alignItems: 'center',
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     resultsContainer: {
         alignItems: 'center',
         padding: 20,
-        backgroundColor: '#f0ece5',
+        backgroundColor: '#e3e1de',
         width: '100%'
     },
     button: {

@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { StyleSheet, Text, View, Pressable } from 'react-native';
 import { CertificationContext } from '../contexts/CertificationContext';
 import { Entypo } from '@expo/vector-icons';
+import LinearGradient from 'react-native-linear-gradient'
 
 export default function EndOfChapterScreen({ route, navigation }) {
   const { currentChapterIndex, correctAnswers } = route.params;
@@ -25,7 +26,12 @@ export default function EndOfChapterScreen({ route, navigation }) {
   }
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+        colors={['#31304d', '#f3f0ea']}
+        style={styles.container}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+      >
       <View style={styles.cardContainer}>
         <View style={styles.titleContainer}>
           <Text style={styles.titleText}>Results</Text>
@@ -45,14 +51,14 @@ export default function EndOfChapterScreen({ route, navigation }) {
           </Pressable>
         </View>
       </View>
-    </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#31304d',
+    // backgroundColor: '#31304d',
     alignItems: 'center',
     justifyContent: 'center',
   },

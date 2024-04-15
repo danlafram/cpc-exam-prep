@@ -14,6 +14,8 @@ export default function QuestionScreen({ route, navigation }) {
     const [showNextButton, setShowNextButton] = useState(false);
     const [resultText, setResultText] = useState(null);
     const [correctAnswers, setCorrectAnswers] = useState(0)
+    const [explanation, setExplanation] = useState(data.questions[selectedChapterIndex][0].explanation)
+    const [showExplanation, setShowExplanation] = useState(false)
 
     // This function handles the user clicking on an answer
     // We track the index of the anwser tracked here so we can use it to cross-check with the answers array
@@ -31,6 +33,7 @@ export default function QuestionScreen({ route, navigation }) {
             setShowNextButton(true)
             setResultText("Correct!")
             setCorrectAnswers(correctAnswers + 1)
+            setShowExplanation(true)
         } else {
             // Wrong answer
             setResultText("Oops, not quite!")
@@ -46,6 +49,8 @@ export default function QuestionScreen({ route, navigation }) {
         setShowNextButton(false)
         setSelectedAnswer(null)
         setResultText(null)
+        setShowExplanation(false)
+        
         if (questions.length === questionIndex + 1) {
             // Show another screen and move to next chapter
             setAnswers(null)
@@ -57,6 +62,7 @@ export default function QuestionScreen({ route, navigation }) {
         } else {
             setQuestionIndex(questionIndex + 1)
             setAnswers(data.questions[selectedChapterIndex][questionIndex + 1].answers)
+            setExplanation(data.questions[selectedChapterIndex][questionIndex + 1].explanation)
         }
     }
 
@@ -69,13 +75,16 @@ export default function QuestionScreen({ route, navigation }) {
             </View>
 
 
-            <View style={styles.answersContainer}>
-                {answers?.length && answers.map((answer, index) =>
-                    <Pressable key={index} style={index === selectedAnswer ? styles.selectedButton : styles.button} onPress={() => handleAnswer(index)}>
-                        <Text style={styles.text}>{answer.answer}</Text>
-                    </Pressable>
-                )}
-            </View>
+            {showExplanation ?
+                <View style={styles.answersContainer}><Text style={styles.questionText}>{explanation}</Text></View>
+                :
+                <View style={styles.answersContainer}>
+                    {answers?.length && answers.map((answer, index) =>
+                        <Pressable key={index} style={index === selectedAnswer ? styles.selectedButton : styles.button} onPress={() => handleAnswer(index)}>
+                            <Text style={styles.text}>{answer.answer}</Text>
+                        </Pressable>
+                    )}
+                </View>}
 
             <View style={styles.resultsContainer}>
                 {
@@ -102,6 +111,15 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start'
     },
     questionContainer: {
+        flex: 3,
+        width: '100%',
+        height: '100%',
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+        backgroundColor: '#e3e1de',
+        padding: 5,
+    },
+    explanationContainer: {
         flex: 2,
         width: '100%',
         height: '100%',

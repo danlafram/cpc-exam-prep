@@ -14,7 +14,8 @@ const storage = new Storage({
 
   // This function should only ever run the first time the user opens the app to populate the quiz data.
   sync: {
-    async getData(){
+    async certData(){
+      console.log('making API call')
       const res = await axios.get('http://localhost:8000/api/quiz/1')
       return res.data;
     }

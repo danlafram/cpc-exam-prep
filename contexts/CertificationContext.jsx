@@ -6,6 +6,8 @@ import React, {
 
 import axios from 'axios';
 
+import storage from "../storage";
+
 const CertificationContext = createContext();
 
 const CertificationProvider = ({ children }) => {
@@ -15,10 +17,19 @@ const CertificationProvider = ({ children }) => {
 
     // TODO: Look for the async storage value instead of making the API call.
     useEffect(() => {
-        axios.get(`${apiUrl}/api/quiz/1`)
-            .then(results => {
-                setData(results.data)
-            })
+
+        storage.load({
+            key: 'certData'
+        }).then((data) => {
+            setData(data)
+        }).catch((e) => {
+            console.log('error retrieving certification data', e)
+        })
+
+        // axios.get(`${apiUrl}/api/quiz/1`)
+        //     .then(results => {
+        //         setData(results.data)
+        //     })
     }, []);
 
     return (<CertificationContext.Provider value={data}>

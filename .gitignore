@@ -3,6 +3,9 @@
 # dependencies
 node_modules/
 
+.env*
+.env
+
 # Expo
 .expo/
 dist/
@@ -15,6 +18,34 @@ web-build/
 *.p12
 *.key
 *.mobileprovision
+
+# Root dir shouldn't have Xcode project
+/*.xcodeproj
+
+
+# Xcode
+!**/*.xcodeproj
+!**/*.pbxproj
+!**/*.xcworkspacedata
+!**/*.xcsettings
+!**/*.xcscheme
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+*.xccheckout
+*.moved-aside
+DerivedData
+*.hmap
+*.ipa
+*.xcuserstate
+project.xcworkspace
+**/.xcode.env.local
 
 # Metro
 .metro-health-check*

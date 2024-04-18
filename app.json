@@ -1,8 +1,9 @@
 {
   "expo": {
-    "name": "my-app",
-    "slug": "my-app",
+    "name": "CPC & CPB Certification Prep",
+    "slug": "cpc-cpb-certification-prep",
     "version": "1.0.0",
+    "privacy": "unlisted",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -16,7 +17,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.my-app"
+      "bundleIdentifier": "com.spoke-dev-cpc-cpb-certification-prep"
     },
     "android": {
       "adaptiveIcon": {
@@ -26,6 +27,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "27be65dc-e20e-4cd4-a34f-82210f683c35"
+      }
     }
   }
 }

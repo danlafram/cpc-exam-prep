@@ -55,7 +55,7 @@ export default function QuestionScreen({ route, navigation }) {
             // Show another screen and move to next chapter
             setAnswers(null)
             setQuestionIndex(0)
-            navigation.navigate('Results', {
+            navigation.replace('Results', {
                 currentChapterIndex: selectedChapterIndex,
                 correctAnswers
             })
@@ -76,7 +76,7 @@ export default function QuestionScreen({ route, navigation }) {
 
 
             {showExplanation ?
-                <View style={styles.answersContainer}><Text style={styles.questionText}>{explanation}</Text></View>
+                <View style={styles.explanationContainer}><Text style={styles.explanationText}>{explanation}</Text></View>
                 :
                 <View style={styles.answersContainer}>
                     {answers?.length && answers.map((answer, index) =>
@@ -120,18 +120,18 @@ const styles = StyleSheet.create({
         padding: 5,
     },
     explanationContainer: {
-        flex: 2,
-        width: '100%',
-        height: '100%',
+        flex: 4,
+        backgroundColor: '#f8f6f2',
+        width: '90%',
+        height: 'auto',
+        borderRadius: 10,
         alignItems: 'center',
-        justifyContent: 'space-evenly',
-        backgroundColor: '#e3e1de',
-        padding: 5,
+        justifyContent: 'flex-start',
+        padding: 15,
     },
     answersContainer: {
         flex: 4,
         backgroundColor: '#e3e1de',
-        // paddingTop: 20,
         width: '100%',
         alignItems: 'center',
         justifyContent: 'flex-start',
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 32,
         borderRadius: 4,
         elevation: 3,
-        backgroundColor: '#ddd9d5',
+        backgroundColor: '#c6bfb8',
         width: '90%'
     },
     nextButton: {
@@ -180,6 +180,11 @@ const styles = StyleSheet.create({
         letterSpacing: 0.50,
         color: '#01061f',
     },
+    explanationText: {
+        fontSize: 25,
+        letterSpacing: 1.5,
+        color: '#01061f',
+    },
     questionTrackerText: {
         fontSize: 15,
         letterSpacing: 0.50,
@@ -189,8 +194,7 @@ const styles = StyleSheet.create({
     text: {
         color: '#01061f',
         fontSize: 16,
-        letterSpacing: 0.50,
-        // fontWeight: 'bold'
+        letterSpacing: 0.50
     },
     nextButtonText: {
         fontSize: 18,

@@ -4,8 +4,6 @@ import React, {
     useEffect
 } from "react";
 
-import axios from 'axios';
-
 import storage from "../storage";
 
 const CertificationContext = createContext();

@@ -1,7 +1,10 @@
-import { useContext } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { CertificationContext } from '../contexts/CertificationContext';
+import { useContext, useEffect, useState } from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useIsFocused } from "@react-navigation/native";
+
+import { CertificationContext } from '../contexts/CertificationContext';
+import storage from "../storage";
 
 const fontAwesome5Icons = [
   "list",
@@ -15,7 +18,24 @@ const fontAwesome5Icons = [
 
 export default function HomeScreen({ navigation }) {
 
+  const isFocused = useIsFocused();
   const data = useContext(CertificationContext)
+  const [chapterProgress, setChapterProgress] = useState([])
+
+  useEffect(() => {
+    // storage.remove({
+    //   key: 'chapter-progress'
+    // }).then(() => console.log('done'));
+    storage.load({
+      key: 'chapter-progress',
+      autoSync: true
+    }).then((data) => {
+      console.log('data', data)
+      setChapterProgress(data.chapterProgressArray)
+    }).catch((e) => console.log(e))
+  }, [isFocused])
+
+  
 
   return (
     <View style={styles.container}>
@@ -37,6 +57,9 @@ export default function HomeScreen({ navigation }) {
             })}>
               <FontAwesome5 name={fontAwesome5Icons[index]} size={26} color="black" />
               <Text style={styles.text}>{chapter.name}</Text>
+              <Text style={styles.progressText}>
+                {chapterProgress.length && chapterProgress[index] !== null ? <Text>{chapterProgress[index] ?? 0}/{data.questions[index].length} completed</Text> : null}
+              </Text>
             </Pressable>
           )
         }
@@ -97,12 +120,18 @@ const styles = StyleSheet.create({
     elevation: 3,
     backgroundColor: '#f8f6f2',
     width: '45%',
-    height: '20%',
+    height: '25%',
     alignItems: 'center',
     justifyContent: 'space-around',
   },
   text: {
     fontSize: 16,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    color: '#31304d',
+  },
+  progressText: {
+    fontSize: 10,
     textAlign: 'center',
     fontWeight: 'bold',
     color: '#31304d',

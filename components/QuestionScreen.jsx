@@ -1,6 +1,8 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { StyleSheet, Text, View, Pressable } from 'react-native';
+
 import { CertificationContext } from '../contexts/CertificationContext';
+import storage from "../storage";
 
 export default function QuestionScreen({ route, navigation }) {
     const { selectedChapterIndex } = route.params;
@@ -16,6 +18,20 @@ export default function QuestionScreen({ route, navigation }) {
     const [correctAnswers, setCorrectAnswers] = useState(0)
     const [explanation, setExplanation] = useState(data.questions[selectedChapterIndex][0].explanation)
     const [showExplanation, setShowExplanation] = useState(false)
+
+    useEffect(() => {
+        storage.load({
+            key: 'chapter-progress'
+          }).then((progressData) => {
+            console.log('progressData', progressData.chapterProgressArray[selectedChapterIndex])
+            if(progressData.chapterProgressArray[selectedChapterIndex]){
+                // User has made progress in this chapter, show them the next question/answers up.
+                setQuestionIndex(progressData.chapterProgressArray[selectedChapterIndex])
+                setAnswers(data.questions[selectedChapterIndex][progressData.chapterProgressArray[selectedChapterIndex]].answers)
+            }
+            // setChapterProgress(data.chapterProgressArray)
+          }).catch((e) => console.log(e))
+    }, [])
 
     // This function handles the user clicking on an answer
     // We track the index of the anwser tracked here so we can use it to cross-check with the answers array
@@ -44,13 +60,14 @@ export default function QuestionScreen({ route, navigation }) {
     // We reset all the tracking and move to the next quest.
     // When its the last question of the chapter, 
     // we show the results page and move to the next chapter or allow them to repeat the chapter
-    const handleNextQuestion = () => {
+    const handleNextQuestion = async () => {
         // When last question, move on to next chapter or show results page.
         setShowNextButton(false)
         setSelectedAnswer(null)
         setResultText(null)
         setShowExplanation(false)
-        
+        await handleSaveProgress()
+
         if (questions.length === questionIndex + 1) {
             // Show another screen and move to next chapter
             setAnswers(null)
@@ -64,6 +81,45 @@ export default function QuestionScreen({ route, navigation }) {
             setAnswers(data.questions[selectedChapterIndex][questionIndex + 1].answers)
             setExplanation(data.questions[selectedChapterIndex][questionIndex + 1].explanation)
         }
+    }
+
+    // This function will save the progress of each chapter
+    const handleSaveProgress = async () => {
+        try {
+            const currentChapterProgress = await storage.load({ key: 'chapter-progress' })
+            // If there has been progress on this chapter, safely increment the completed count
+            if (currentChapterProgress[selectedChapterIndex] !== undefined) {
+                console.log("Not null:", currentChapterProgress[selectedChapterIndex])
+                currentChapterProgress[selectedChapterIndex] = questionIndex + 1
+            }
+            // If there has not been progress on this chapter, create the entry at that position 
+            else {
+                console.log('undefines', currentChapterProgress[selectedChapterIndex])
+                currentChapterProgress.push(questionIndex + 1)
+            }
+            console.log('currentChapterProgress', currentChapterProgress)
+
+            await storage.save({
+                key: `chapter-progress`,
+                data: {
+                    chapterProgressArray: currentChapterProgress
+                },
+                // if set to null, then it will never expire.
+                expires: null
+            });
+        } catch (e) {
+            const currentChapterProgressArray = []
+            currentChapterProgressArray[0] = questionIndex + 1
+            console.log('currentChapterProgressArray', currentChapterProgressArray)
+            await storage.save({
+                key: 'chapter-progress',
+                data: {
+                    chapterProgressArray: currentChapterProgressArray
+                }
+            })
+        }
+
+        
     }
 
     return (

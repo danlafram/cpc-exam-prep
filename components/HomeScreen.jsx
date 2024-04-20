@@ -34,7 +34,9 @@ export default function HomeScreen({ navigation }) {
       autoSync: true
     }).then((data) => {
       setChapterProgress(data.chapterProgressArray)
-    }).catch((e) => console.log(e))
+    }).catch((e) => {
+      // Do nothing
+    })
   }, [isFocused])
 
   const handleChapterClick = (chapterIndex) => {
@@ -42,7 +44,6 @@ export default function HomeScreen({ navigation }) {
     storage.load({
       key: 'study-mode'
     }).then((data) => {
-      console.log('data',data.mode)
       navigation.navigate('Questions', {
         selectedChapterIndex: chapterIndex,
         studyMode: data.mode

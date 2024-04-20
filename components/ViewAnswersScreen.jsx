@@ -3,7 +3,9 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import storage from "../storage";
 
-export default function ModeSelectionScreen({ navigation, route }) {
+export default function ViewAnswersScreen({ navigation, route }) {
+
+    const data = useContext(CertificationContext)
 
     const { selectedChapterIndex } = route.params;
 
@@ -33,7 +35,7 @@ export default function ModeSelectionScreen({ navigation, route }) {
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
-                <Text style={styles.titleText}>What mode do you want to study in?</Text>
+                <Text style={styles.titleText}>Answers</Text>
             </View>
             <View style={styles.chapterTitleContainer}>
                 <Text style={styles.chapterTitleText}>Select mode:</Text>

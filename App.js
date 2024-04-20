@@ -9,6 +9,7 @@ import HomeScreen from "./components/HomeScreen";
 import QuestionScreen from "./components/QuestionScreen";
 import EndOfChapterScreen from "./components/EndOfChapterScreen";
 import ModeSelectionScreen from "./components/ModeSelectionScreen";
+import ViewAnswersScreen from "./components/ViewAnswersScreen";
 
 
 const Stack = createNativeStackNavigator();
@@ -22,6 +23,7 @@ export default function App() {
           <Stack.Screen name="Questions" component={QuestionScreen} />
           <Stack.Screen options={{ headerShown: false }} name="Results" component={EndOfChapterScreen} />
           <Stack.Screen name="Mode select" component={ModeSelectionScreen} />
+          <Stack.Screen name="Answers" component={ViewAnswersScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </CertificationProvider>

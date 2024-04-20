@@ -7,9 +7,9 @@ import LinearGradient from 'react-native-linear-gradient'
 import storage from "../storage";
 
 export default function EndOfChapterScreen({ route, navigation }) {
-  const { currentChapterIndex, correctAnswers, studyMode } = route.params;
+  const { currentChapterIndex, correctAnswers, studyMode, wrongAnswers } = route.params;
 
-  console.log('study-mode', studyMode)
+  console.log('wrongAnwers', wrongAnswers)
 
   const data = useContext(CertificationContext)
 
@@ -45,8 +45,12 @@ export default function EndOfChapterScreen({ route, navigation }) {
         })
       });
     }).catch((e) => console.log(e))
+  }
 
-
+  const handleViewAnswers = () => {
+    navigation.replace('Answers', {
+      selectedChapterIndex: currentChapterIndex,
+    })
   }
 
   return (
@@ -73,6 +77,11 @@ export default function EndOfChapterScreen({ route, navigation }) {
           </Pressable>
           <Pressable style={styles.redoButton} onPress={() => handleRedoChapter()}>
             <Text style={styles.redoText}>Redo chapter</Text>
+          </Pressable>
+        </View>
+        <View style={styles.viewAnswerContainer}>
+        <Pressable style={styles.nextButton} onPress={() => handleViewAnswers()}>
+            <Text style={styles.nextText}>View Answers</Text>
           </Pressable>
         </View>
       </View>
@@ -150,5 +159,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     letterSpacing: 0.25,
     color: '#393c4e'
+  },
+  viewAnswerContainer: {
+    paddingTop: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    justifyContent: 'space-evenly'
   }
 });

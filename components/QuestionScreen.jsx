@@ -18,6 +18,7 @@ export default function QuestionScreen({ route, navigation }) {
     const [correctAnswers, setCorrectAnswers] = useState(0)
     const [explanation, setExplanation] = useState(data.questions[selectedChapterIndex][0].explanation)
     const [showExplanation, setShowExplanation] = useState(false)
+    const [wrongAnswers, setWrongAnswers] = useState([])
 
     // useEffect to handle progress logic
     useEffect(() => {
@@ -71,12 +72,17 @@ export default function QuestionScreen({ route, navigation }) {
                 setResultText("Oops, not quite!")
             }
         } else {
+            // In exam mode, don't show results until end of chapter.
             if (answers[selectedAnswer]?.is_answer) {
                 // Right answer
                 setShowNextButton(true)
                 setCorrectAnswers(correctAnswers + 1)
             } else {
                 // Wrong answer
+                // Track the wrong answers to let users see what they got wrong at the end.
+                const currentWrongAnswers = wrongAnswers
+                currentWrongAnswers.push(questionIndex)
+                setWrongAnswers(currentWrongAnswers)
                 setShowNextButton(true)
             }
         }
@@ -101,7 +107,8 @@ export default function QuestionScreen({ route, navigation }) {
             navigation.replace('Results', {
                 currentChapterIndex: selectedChapterIndex,
                 correctAnswers,
-                studyMode
+                studyMode,
+                wrongAnswers
             })
         } else {
             setQuestionIndex(questionIndex + 1)

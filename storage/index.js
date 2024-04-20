@@ -18,7 +18,7 @@ const storage = new Storage({
 // This function should only ever run the first time the user opens the app to populate the quiz data.
 storage.sync = {
   async certData(){
-    const res = await axios.get(`${apiUrl}/api/quiz/1`) // This needs to be ENV driven
+    const res = await axios.get(`${apiUrl}/api/quiz/1`)
     storage.save({
       key: 'certData',
       data: res.data

@@ -14,7 +14,6 @@ const CertificationProvider = ({ children }) => {
 
     // TODO: Look for the async storage value instead of making the API call.
     useEffect(() => {
-
         storage.load({
             key: 'certData'
         }).then((data) => {

@@ -24,9 +24,24 @@ export default function QuestionScreen({ route, navigation }) {
             key: 'chapter-progress'
           }).then((progressData) => {
             if(progressData.chapterProgressArray[selectedChapterIndex]){
-                // User has made progress in this chapter, show them the next question/answers up.
-                setQuestionIndex(progressData.chapterProgressArray[selectedChapterIndex])
-                setAnswers(data.questions[selectedChapterIndex][progressData.chapterProgressArray[selectedChapterIndex]].answers)
+                // If the user already completed this chapter, reset the progress to restart
+                if(progressData.chapterProgressArray[selectedChapterIndex] === questions.length){
+                    const updatedProgressArray = progressData.chapterProgressArray
+                    updatedProgressArray[selectedChapterIndex] = 1
+                    storage.save({
+                        key: `chapter-progress`,
+                        data: {
+                            chapterProgressArray: updatedProgressArray
+                        },
+                        // if set to null, then it will never expire.
+                        expires: null
+                    });
+                } else {
+                    // User has made progress in this chapter, show them the next question/answers up.
+                    setQuestionIndex(progressData.chapterProgressArray[selectedChapterIndex])
+                    setAnswers(data.questions[selectedChapterIndex][progressData.chapterProgressArray[selectedChapterIndex]].answers)
+                }
+                
             }
             // setChapterProgress(data.chapterProgressArray)
           }).catch((e) => console.log(e))

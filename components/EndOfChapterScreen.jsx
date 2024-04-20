@@ -4,6 +4,8 @@ import { CertificationContext } from '../contexts/CertificationContext';
 import { Entypo } from '@expo/vector-icons';
 import LinearGradient from 'react-native-linear-gradient'
 
+import storage from "../storage";
+
 export default function EndOfChapterScreen({ route, navigation }) {
   const { currentChapterIndex, correctAnswers } = route.params;
 
@@ -20,9 +22,27 @@ export default function EndOfChapterScreen({ route, navigation }) {
   // Reset the chapter to redo.
   // NOTE: Use replace here to reset the state of the new screen.
   const handleRedoChapter = () => {
-    navigation.replace('Questions', {
-      selectedChapterIndex: currentChapterIndex,
-    })
+    storage.load({
+      key: 'chapter-progress',
+      autoSync: true
+    }).then((data) => {
+      chapterProgressArray = data.chapterProgressArray
+      chapterProgressArray[currentChapterIndex] = 0
+      storage.save({
+        key: `chapter-progress`,
+        data: {
+          chapterProgressArray
+        },
+        // if set to null, then it will never expire.
+        expires: null
+      }).then(() => {
+        navigation.replace('Questions', {
+          selectedChapterIndex: currentChapterIndex,
+        })
+      });
+    }).catch((e) => console.log(e))
+    
+    
   }
 
   return (

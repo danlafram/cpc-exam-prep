@@ -28,9 +28,8 @@ export default function HomeScreen({ navigation }) {
     // }).then(() => console.log('done'));
     storage.load({
       key: 'chapter-progress',
-      autoSync: true
+      // autoSync: true
     }).then((data) => {
-      console.log('data', data)
       setChapterProgress(data.chapterProgressArray)
     }).catch((e) => console.log(e))
   }, [isFocused])

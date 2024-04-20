@@ -37,7 +37,9 @@ export default function EndOfChapterScreen({ route, navigation }) {
           <Text style={styles.titleText}>Results</Text>
           <Entypo style={styles.icon} name="trophy" size={60} color="#31304d" />
           <Text style={styles.subTitleText}>Congrats! You just completed the {data.chapters[currentChapterIndex].name} chapter.</Text>
-          <Text style={styles.subTitleText}>{correctAnswers}/{data.questions[currentChapterIndex].length} correct answers.</Text>
+          {/* TODO: When 'Exam mode' is implemented, show results */}
+          {/* TODO: Study mode will just show Chapter completion */}
+          {/* <Text style={styles.subTitleText}>{correctAnswers}/{data.questions[currentChapterIndex].length} correct answers.</Text> */}
         </View>
         {/* <View style={styles.graphicContainer}>
           

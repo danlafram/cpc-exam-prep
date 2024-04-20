@@ -23,7 +23,6 @@ export default function QuestionScreen({ route, navigation }) {
         storage.load({
             key: 'chapter-progress'
           }).then((progressData) => {
-            console.log('progressData', progressData.chapterProgressArray[selectedChapterIndex])
             if(progressData.chapterProgressArray[selectedChapterIndex]){
                 // User has made progress in this chapter, show them the next question/answers up.
                 setQuestionIndex(progressData.chapterProgressArray[selectedChapterIndex])
@@ -86,31 +85,28 @@ export default function QuestionScreen({ route, navigation }) {
     // This function will save the progress of each chapter
     const handleSaveProgress = async () => {
         try {
-            const currentChapterProgress = await storage.load({ key: 'chapter-progress' })
+            const { chapterProgressArray } = await storage.load({ key: 'chapter-progress' })
             // If there has been progress on this chapter, safely increment the completed count
-            if (currentChapterProgress[selectedChapterIndex] !== undefined) {
-                console.log("Not null:", currentChapterProgress[selectedChapterIndex])
-                currentChapterProgress[selectedChapterIndex] = questionIndex + 1
+            if (chapterProgressArray[selectedChapterIndex] !== undefined) {
+                chapterProgressArray[selectedChapterIndex] = questionIndex + 1
             }
             // If there has not been progress on this chapter, create the entry at that position 
             else {
-                console.log('undefines', currentChapterProgress[selectedChapterIndex])
-                currentChapterProgress.push(questionIndex + 1)
+                chapterProgressArray.push(questionIndex + 1)
             }
-            console.log('currentChapterProgress', currentChapterProgress)
 
             await storage.save({
                 key: `chapter-progress`,
                 data: {
-                    chapterProgressArray: currentChapterProgress
+                    chapterProgressArray
                 },
                 // if set to null, then it will never expire.
                 expires: null
             });
         } catch (e) {
+            // TODO: This may not be necessary anymore
             const currentChapterProgressArray = []
             currentChapterProgressArray[0] = questionIndex + 1
-            console.log('currentChapterProgressArray', currentChapterProgressArray)
             await storage.save({
                 key: 'chapter-progress',
                 data: {
@@ -127,7 +123,7 @@ export default function QuestionScreen({ route, navigation }) {
             <View style={styles.questionContainer}>
                 <Text style={styles.questionTrackerText}>{data?.chapters[selectedChapterIndex].name}</Text>
                 <Text style={styles.questionTrackerText}>Question {questionIndex + 1} of {questions?.length ? questions?.length : 'loading...'}</Text>
-                <Text style={styles.questionText}>{questions?.length ? questions[questionIndex]?.question : "loading..."}</Text>
+                <Text adjustsFontSizeToFit style={styles.questionText}>{questions?.length ? questions[questionIndex]?.question : "loading..."}</Text>
             </View>
 
 
@@ -144,7 +140,7 @@ export default function QuestionScreen({ route, navigation }) {
 
             <View style={styles.resultsContainer}>
                 {
-                    resultText && <Text>{resultText}</Text>
+                    resultText && <Text style={styles.resultText}>{resultText}</Text>
                 }
                 {showNextButton ?
                     <Pressable style={styles.nextButton} onPress={() => handleNextQuestion()}>
@@ -173,7 +169,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-evenly',
         backgroundColor: '#e3e1de',
-        padding: 5,
+        paddingHorizontal: 15,
+        paddingTop: 10,
     },
     explanationContainer: {
         flex: 4,
@@ -232,7 +229,7 @@ const styles = StyleSheet.create({
         alignContent: 'center'
     },
     questionText: {
-        fontSize: 25,
+        fontSize: 20,
         letterSpacing: 0.50,
         color: '#01061f',
     },
@@ -256,5 +253,8 @@ const styles = StyleSheet.create({
         fontSize: 18,
         alignItems: 'center',
         color: 'white',
+    },
+    resultText: {
+        fontSize: 25
     }
 });

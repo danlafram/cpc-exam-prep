@@ -9,7 +9,6 @@ import storage from "../storage";
 const CertificationContext = createContext();
 
 const CertificationProvider = ({ children }) => {
-    const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
     const [data, setData] = useState(null);
 
@@ -23,11 +22,6 @@ const CertificationProvider = ({ children }) => {
         }).catch((e) => {
             console.log('error retrieving certification data', e)
         })
-
-        // axios.get(`${apiUrl}/api/quiz/1`)
-        //     .then(results => {
-        //         setData(results.data)
-        //     })
     }, []);
 
     return (<CertificationContext.Provider value={data}>

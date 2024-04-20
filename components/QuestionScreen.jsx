@@ -5,7 +5,7 @@ import { CertificationContext } from '../contexts/CertificationContext';
 import storage from "../storage";
 
 export default function QuestionScreen({ route, navigation }) {
-    const { selectedChapterIndex } = route.params;
+    const { selectedChapterIndex, studyMode } = route.params;
 
     const data = useContext(CertificationContext)
 
@@ -19,6 +19,7 @@ export default function QuestionScreen({ route, navigation }) {
     const [explanation, setExplanation] = useState(data.questions[selectedChapterIndex][0].explanation)
     const [showExplanation, setShowExplanation] = useState(false)
 
+    // useEffect to handle progress logic
     useEffect(() => {
         storage.load({
             key: 'chapter-progress'
@@ -58,15 +59,26 @@ export default function QuestionScreen({ route, navigation }) {
     // We use the 'selectedAnswer' state to check and see if they selected the right answer,
     // then we toggle result messages accordingly.
     const handleSubmit = () => {
-        if (answers[selectedAnswer]?.is_answer) {
-            // Right answer
-            setShowNextButton(true)
-            setResultText("Correct!")
-            setCorrectAnswers(correctAnswers + 1)
-            setShowExplanation(true)
+        if(studyMode === 'study'){
+            if (answers[selectedAnswer]?.is_answer) {
+                // Right answer
+                setShowNextButton(true)
+                setResultText("Correct!")
+                setCorrectAnswers(correctAnswers + 1)
+                setShowExplanation(true)
+            } else {
+                // Wrong answer
+                setResultText("Oops, not quite!")
+            }
         } else {
-            // Wrong answer
-            setResultText("Oops, not quite!")
+            if (answers[selectedAnswer]?.is_answer) {
+                // Right answer
+                setShowNextButton(true)
+                setCorrectAnswers(correctAnswers + 1)
+            } else {
+                // Wrong answer
+                setShowNextButton(true)
+            }
         }
     }
 
@@ -88,7 +100,8 @@ export default function QuestionScreen({ route, navigation }) {
             setQuestionIndex(0)
             navigation.replace('Results', {
                 currentChapterIndex: selectedChapterIndex,
-                correctAnswers
+                correctAnswers,
+                studyMode
             })
         } else {
             setQuestionIndex(questionIndex + 1)

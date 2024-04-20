@@ -8,6 +8,7 @@ import { CertificationProvider } from './contexts/CertificationContext';
 import HomeScreen from "./components/HomeScreen";
 import QuestionScreen from "./components/QuestionScreen";
 import EndOfChapterScreen from "./components/EndOfChapterScreen";
+import ModeSelectionScreen from "./components/ModeSelectionScreen";
 
 
 const Stack = createNativeStackNavigator();
@@ -20,6 +21,7 @@ export default function App() {
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Questions" component={QuestionScreen} />
           <Stack.Screen options={{ headerShown: false }} name="Results" component={EndOfChapterScreen} />
+          <Stack.Screen name="Mode select" component={ModeSelectionScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </CertificationProvider>

@@ -7,7 +7,9 @@ import LinearGradient from 'react-native-linear-gradient'
 import storage from "../storage";
 
 export default function EndOfChapterScreen({ route, navigation }) {
-  const { currentChapterIndex, correctAnswers } = route.params;
+  const { currentChapterIndex, correctAnswers, studyMode } = route.params;
+
+  console.log('study-mode', studyMode)
 
   const data = useContext(CertificationContext)
 
@@ -16,6 +18,7 @@ export default function EndOfChapterScreen({ route, navigation }) {
   const handleNextChapter = () => {
     navigation.replace('Questions', {
       selectedChapterIndex: currentChapterIndex + 1,
+      studyMode
     })
   }
 
@@ -38,32 +41,32 @@ export default function EndOfChapterScreen({ route, navigation }) {
       }).then(() => {
         navigation.replace('Questions', {
           selectedChapterIndex: currentChapterIndex,
+          studyMode
         })
       });
     }).catch((e) => console.log(e))
-    
-    
+
+
   }
 
   return (
     <LinearGradient
-        colors={['#31304d', '#f3f0ea']}
-        style={styles.container}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-      >
+      colors={['#31304d', '#f3f0ea']}
+      style={styles.container}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+    >
       <View style={styles.cardContainer}>
         <View style={styles.titleContainer}>
           <Text style={styles.titleText}>Results</Text>
           <Entypo style={styles.icon} name="trophy" size={60} color="#31304d" />
           <Text style={styles.subTitleText}>Congrats! You just completed the {data.chapters[currentChapterIndex].name} chapter.</Text>
-          {/* TODO: When 'Exam mode' is implemented, show results */}
-          {/* TODO: Study mode will just show Chapter completion */}
-          {/* <Text style={styles.subTitleText}>{correctAnswers}/{data.questions[currentChapterIndex].length} correct answers.</Text> */}
+          {studyMode === 'exam' &&
+            <Text style={styles.subTitleText}>{correctAnswers}/{data.questions[currentChapterIndex].length} correct answers.</Text>
+          }
+          {/* TODO: Need to show results page with historic view of right/wrong */}
+
         </View>
-        {/* <View style={styles.graphicContainer}>
-          
-        </View> */}
         <View style={styles.actionsContainer}>
           <Pressable style={styles.nextButton} onPress={() => handleNextChapter()}>
             <Text style={styles.nextText}>Next Chapter</Text>

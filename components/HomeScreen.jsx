@@ -26,6 +26,9 @@ export default function HomeScreen({ navigation }) {
     // storage.remove({
     //   key: 'chapter-progress'
     // }).then(() => console.log('done'));
+    // storage.remove({
+    //   key: 'study-mode'
+    // }).then(() => console.log('done'));
     storage.load({
       key: 'chapter-progress',
       autoSync: true
@@ -34,13 +37,27 @@ export default function HomeScreen({ navigation }) {
     }).catch((e) => console.log(e))
   }, [isFocused])
 
-  
+  const handleChapterClick = (chapterIndex) => {
+    // Check to see what mode we're in before moving forward.\
+    storage.load({
+      key: 'study-mode'
+    }).then((data) => {
+      console.log('data',data.mode)
+      navigation.navigate('Questions', {
+        selectedChapterIndex: chapterIndex,
+        studyMode: data.mode
+      })
+    }).catch((e) => // If no mode selected, show 'Mode select' screen.
+      navigation.navigate('Mode select', {
+        selectedChapterIndex: chapterIndex,
+      }))
+  }
 
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>Certified Medical Biller Training</Text>
-        <Text style={styles.subTitleText}>Use these questions to prep for your certification exam</Text>
+        <Text style={styles.titleText}>CPB Exam Preperation</Text>
+        <Text style={styles.subTitleText}>Use these questions to prep for your Certified Professional Biller exam</Text>
       </View>
       <View style={styles.chapterTitleContainer}>
         <Text style={styles.chapterTitleText}>Chapters</Text>
@@ -51,9 +68,7 @@ export default function HomeScreen({ navigation }) {
             <Pressable
               key={chapter.id}
               style={styles.button}
-              onPress={() => navigation.navigate('Questions', {
-              selectedChapterIndex: index,
-            })}>
+              onPress={() => handleChapterClick(index)}>
               <FontAwesome5 name={fontAwesome5Icons[index]} size={26} color="black" />
               <Text style={styles.text}>{chapter.name}</Text>
               <Text style={styles.progressText}>

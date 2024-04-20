@@ -1,0 +1,1 @@
+// This screen will handle resetting the 'mode' and resetting all the progress

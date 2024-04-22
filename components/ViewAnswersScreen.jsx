@@ -1,75 +1,104 @@
 import { useContext, useEffect, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View, FlatList, Modal } from 'react-native';
 
+import { CertificationContext } from '../contexts/CertificationContext';
 import storage from "../storage";
 
 export default function ViewAnswersScreen({ navigation, route }) {
 
     const data = useContext(CertificationContext)
 
-    const { selectedChapterIndex } = route.params;
+    const [modalVisible, setModalVisible] = useState(false)
+    const [selectedQuestion, setSelectedQuestion] = useState(null)
+    const [correctAnswer, setCorrectAnswer] = useState()
 
-    const [showNextButton, setShowNextButton] = useState(false)
-    const [selectedAnswer, setSelectedAnswer] = useState('');
+    const { selectedChapterIndex, wrongAnswers } = route.params;
 
-    const handleModeSelect = (mode) => {
-        setSelectedAnswer(mode)
-        setShowNextButton(true)
-    }
+    console.log('wrongAnswers', wrongAnswers)
 
-    const handleSubmit = () => {
-        storage.save({
-            key: `study-mode`,
-            data: {
-                mode: selectedAnswer
-            },
-            // if set to null, then it will never expire.
-            expires: null
-        });
-        navigation.replace('Questions', {
-            selectedChapterIndex,
-            studyMode: selectedAnswer
-        })
+
+
+    const Item = ({ item, index }) => {
+        const questionWrong = wrongAnswers.find((answer) => answer === index)
+        console.log('questionWrong', questionWrong)
+        return (
+            <View style={questionWrong !== undefined ? styles.wrongAnswerContainer : styles.answerContainer}>
+                <Pressable styles={styles.pressableItem} onPress={() => handleItemClick(index)}>
+                    <Text>{item.question}</Text>
+                </Pressable>
+            </View>
+        )
+    };
+
+    const handleItemClick = (index) => {
+        console.log('handling click')
+        setSelectedQuestion(index)
+        setModalVisible(true)
     }
 
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
-                <Text style={styles.titleText}>Answers</Text>
+                <Text style={styles.titleText}>Chapter Answers</Text>
             </View>
-            <View style={styles.chapterTitleContainer}>
-                <Text style={styles.chapterTitleText}>Select mode:</Text>
+            <View style={styles.answersContainer}>
+                <FlatList
+                    data={data.questions[selectedChapterIndex]}
+                    renderItem={({ item, index }) => <Item item={item} index={index} />}
+                    keyExtractor={item => item.id}
+                />
             </View>
-            <View style={styles.modesContainer}>
-                <Pressable
-                    style={selectedAnswer === 'study' ? styles.selectedButton : styles.button}
-                    onPress={() => handleModeSelect('study')}>
-                    <Text style={styles.text}>Study mode</Text>
-                    <Text style={styles.descriptionText}>
-                        Answers and explanations are shown after each question is answered.
-                    </Text>
-                </Pressable>
-                <Pressable
-                    style={selectedAnswer === 'exam' ? styles.selectedButton : styles.button}
-                    onPress={() => handleModeSelect('exam')}>
-                    <Text style={styles.text}>Exam mode</Text>
-                    <Text style={styles.descriptionText}>
-                        You'll only see the results of your questions at the end of each chapter.
-                    </Text>
-                </Pressable>
-            </View>
-            <View style={styles.submitContainer}>
-                {showNextButton &&
-                    <Pressable disabled={selectedAnswer === null} style={styles.submitButton} onPress={() => handleSubmit()}>
-                        <Text style={styles.submitButtonText}>Submit</Text>
-                    </Pressable>
-                }
-            </View>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+            >
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <Text style={styles.questionText}>{data.questions[selectedChapterIndex][selectedQuestion]?.question}</Text>
+                        <View style={styles.questionsContainer}>
+                        {
+                            data.questions[selectedChapterIndex][selectedQuestion]?.answers.map((answer) =>
+                                <Text style={answer.is_answer ? styles.correctAnswer : styles.genericAnswer}>
+                                    {answer.answer}
+                                </Text>)
+                        }
+                        </View>
+                        <Pressable
+                            style={styles.buttonClose}
+                            onPress={() => setModalVisible(false)}>
+                            <Text style={styles.closeButtonText}>Dismiss</Text>
+                        </Pressable>
+                    </View>
+
+                </View>
+            </Modal>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
+    questionsContainer: {
+        // flex: 3,
+        width: '100%',
+        // height: '100%',
+        alignItems: 'flex-start',
+        // justifyContent: 'space-evenly',
+        // backgroundColor: '#e3e1de',
+        // paddingHorizontal: 15,
+        padding: 10,
+    },
+    questionText: {
+        fontSize: 25
+    },
+    correctAnswer: {
+        fontSize: 20,
+        backgroundColor: 'green',
+    },
+    genericAnswer: {
+        fontSize: 16,
+        backgroundColor: '#fff'
+    },
     container: {
         flex: 1,
         backgroundColor: '#31304d',
@@ -93,7 +122,7 @@ const styles = StyleSheet.create({
     chapterTitleText: {
         fontSize: 25
     },
-    modesContainer: {
+    answersContainer: {
         flex: 3,
         backgroundColor: '#e3e1de',
         width: '100%',
@@ -106,10 +135,6 @@ const styles = StyleSheet.create({
         paddingTop: 20,
         margin: 5,
         fontSize: 30,
-        color: 'white',
-    },
-    subTitleText: {
-        fontSize: 20,
         color: 'white',
     },
     button: {
@@ -155,7 +180,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#e3e1de',
         width: '100%'
     },
-    submitButton: {
+    buttonClose: {
         margin: 5,
         paddingVertical: 12,
         paddingHorizontal: 32,
@@ -171,4 +196,46 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         color: 'white',
     },
+    answerContainer: {
+        padding: 10,
+        margin: 5,
+        backgroundColor: '#fff',
+        borderRadius: 25
+    },
+    wrongAnswerContainer: {
+        padding: 10,
+        margin: 5,
+        backgroundColor: '#fff',
+        borderRadius: 25,
+        backgroundColor: 'red'
+    },
+    pressableItem: {
+        width: '100%',
+        height: '100%'
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 22,
+    },
+    modalView: {
+        justifyContent: 'space-between',
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 35,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    closeButtonText: {
+        color: "#fff"
+    }
 });

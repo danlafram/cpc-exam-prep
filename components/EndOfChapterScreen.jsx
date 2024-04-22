@@ -50,6 +50,7 @@ export default function EndOfChapterScreen({ route, navigation }) {
   const handleViewAnswers = () => {
     navigation.replace('Answers', {
       selectedChapterIndex: currentChapterIndex,
+      wrongAnswers
     })
   }
 

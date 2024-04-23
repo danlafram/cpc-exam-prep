@@ -15,7 +15,6 @@ const fontAwesome5Icons = [
   "file-code"
 ]
 
-
 export default function HomeScreen({ navigation }) {
 
   const isFocused = useIsFocused();
@@ -23,12 +22,6 @@ export default function HomeScreen({ navigation }) {
   const [chapterProgress, setChapterProgress] = useState([])
 
   useEffect(() => {
-    // storage.remove({
-    //   key: 'chapter-progress'
-    // }).then(() => console.log('done'));
-    // storage.remove({
-    //   key: 'study-mode'
-    // }).then(() => console.log('done'));
     storage.load({
       key: 'chapter-progress',
       autoSync: true
@@ -57,6 +50,9 @@ export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
+        <Pressable style={styles.settingButton} onPress={() => navigation.navigate('Settings')}>
+          <FontAwesome5 name="cog" size={24} color="white" />
+        </Pressable>
         <Text style={styles.titleText}>CPB Exam Preperation</Text>
         <Text style={styles.subTitleText}>Use these questions to prep for your Certified Professional Biller exam</Text>
       </View>
@@ -126,6 +122,9 @@ const styles = StyleSheet.create({
   subTitleText: {
     fontSize: 20,
     color: 'white',
+  },
+  settingButton: {
+    alignSelf: 'flex-end',
   },
   button: {
     marginTop: 30,

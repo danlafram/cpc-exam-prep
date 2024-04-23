@@ -6,9 +6,8 @@ import { FontAwesome5 } from '@expo/vector-icons';
 
 
 import { CertificationContext } from '../contexts/CertificationContext';
-import storage from "../storage";
 
-export default function ViewAnswersScreen({ navigation, route }) {
+export default function ViewAnswersScreen({ route }) {
 
     const data = useContext(CertificationContext)
 
@@ -59,12 +58,12 @@ export default function ViewAnswersScreen({ navigation, route }) {
                     <View style={styles.modalView}>
                         <Text style={styles.questionText}>{data.questions[selectedChapterIndex][selectedQuestion]?.question}</Text>
                         <View style={styles.questionsContainer}>
-                        {
-                            data.questions[selectedChapterIndex][selectedQuestion]?.answers.map((answer) =>
-                                <Text key={answer.id} style={answer.is_answer ? styles.correctAnswer : styles.genericAnswer}>
-                                    {answer.answer}
-                                </Text>)
-                        }
+                            {
+                                data.questions[selectedChapterIndex][selectedQuestion]?.answers.map((answer) =>
+                                    <Text key={answer.id} style={answer.is_answer ? styles.correctAnswer : styles.genericAnswer}>
+                                        {answer.answer}
+                                    </Text>)
+                            }
                         </View>
                         <Pressable
                             style={styles.buttonClose}
@@ -91,7 +90,7 @@ const styles = StyleSheet.create({
     correctAnswer: {
         fontSize: 20,
         backgroundColor: '#00FF7F',
-        
+
     },
     genericAnswer: {
         fontSize: 16,

@@ -1,5 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View, FlatList, Modal } from 'react-native';
+import { Feather } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
+
+
 
 import { CertificationContext } from '../contexts/CertificationContext';
 import storage from "../storage";
@@ -10,21 +14,18 @@ export default function ViewAnswersScreen({ navigation, route }) {
 
     const [modalVisible, setModalVisible] = useState(false)
     const [selectedQuestion, setSelectedQuestion] = useState(null)
-    const [correctAnswer, setCorrectAnswer] = useState()
 
     const { selectedChapterIndex, wrongAnswers } = route.params;
-
-    console.log('wrongAnswers', wrongAnswers)
 
 
 
     const Item = ({ item, index }) => {
         const questionWrong = wrongAnswers.find((answer) => answer === index)
-        console.log('questionWrong', questionWrong)
         return (
-            <View style={questionWrong !== undefined ? styles.wrongAnswerContainer : styles.answerContainer}>
-                <Pressable styles={styles.pressableItem} onPress={() => handleItemClick(index)}>
-                    <Text>{item.question}</Text>
+            <View style={styles.answerContainer}>
+                <Pressable style={styles.pressableItem} onPress={() => handleItemClick(index)}>
+                    {questionWrong !== undefined ? <Feather style={styles.answerIcon} name="x-circle" size={24} color="red" /> : <FontAwesome5 style={styles.answerIcon} name="check" size={24} color="green" />}
+                    <Text style={styles.questionText}>{item.question}</Text>
                 </Pressable>
             </View>
         )
@@ -43,6 +44,7 @@ export default function ViewAnswersScreen({ navigation, route }) {
             </View>
             <View style={styles.answersContainer}>
                 <FlatList
+                    style={styles.listStyle}
                     data={data.questions[selectedChapterIndex]}
                     renderItem={({ item, index }) => <Item item={item} index={index} />}
                     keyExtractor={item => item.id}
@@ -59,7 +61,7 @@ export default function ViewAnswersScreen({ navigation, route }) {
                         <View style={styles.questionsContainer}>
                         {
                             data.questions[selectedChapterIndex][selectedQuestion]?.answers.map((answer) =>
-                                <Text style={answer.is_answer ? styles.correctAnswer : styles.genericAnswer}>
+                                <Text key={answer.id} style={answer.is_answer ? styles.correctAnswer : styles.genericAnswer}>
                                     {answer.answer}
                                 </Text>)
                         }
@@ -79,21 +81,17 @@ export default function ViewAnswersScreen({ navigation, route }) {
 
 const styles = StyleSheet.create({
     questionsContainer: {
-        // flex: 3,
         width: '100%',
-        // height: '100%',
         alignItems: 'flex-start',
-        // justifyContent: 'space-evenly',
-        // backgroundColor: '#e3e1de',
-        // paddingHorizontal: 15,
         padding: 10,
     },
     questionText: {
-        fontSize: 25
+        fontSize: 25,
     },
     correctAnswer: {
         fontSize: 20,
-        backgroundColor: 'green',
+        backgroundColor: '#00FF7F',
+        
     },
     genericAnswer: {
         fontSize: 16,
@@ -112,18 +110,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#31304d',
         justifyContent: 'space-evenly'
     },
-    chapterTitleContainer: {
-        padding: 10,
-        backgroundColor: '#e3e1de',
-        width: '100%',
-        alignItems: 'center',
-        borderTopLeftRadius: 35,
-    },
-    chapterTitleText: {
-        fontSize: 25
-    },
     answersContainer: {
-        flex: 3,
+        paddingTop: 15,
+        flex: 6,
         backgroundColor: '#e3e1de',
         width: '100%',
         height: '100%',
@@ -137,49 +126,6 @@ const styles = StyleSheet.create({
         fontSize: 30,
         color: 'white',
     },
-    button: {
-        marginTop: 30,
-        paddingVertical: 12,
-        paddingHorizontal: 32,
-        borderRadius: 4,
-        elevation: 3,
-        backgroundColor: '#f8f6f2',
-        width: '45%',
-        height: '35%',
-        alignItems: 'center',
-        justifyContent: 'space-around',
-    },
-    selectedButton: {
-        marginTop: 30,
-        paddingVertical: 12,
-        paddingHorizontal: 32,
-        borderRadius: 4,
-        elevation: 3,
-        backgroundColor: '#f8f6f2',
-        width: '45%',
-        height: '35%',
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        backgroundColor: '#c6bfb8',
-    },
-    text: {
-        fontSize: 20,
-        textAlign: 'center',
-        fontWeight: 'bold',
-        color: '#31304d',
-    },
-    descriptionText: {
-        fontSize: 15,
-        textAlign: 'center',
-        fontWeight: 'bold',
-        color: '#31304d',
-    },
-    submitContainer: {
-        alignItems: 'center',
-        padding: 20,
-        backgroundColor: '#e3e1de',
-        width: '100%'
-    },
     buttonClose: {
         margin: 5,
         paddingVertical: 12,
@@ -190,11 +136,6 @@ const styles = StyleSheet.create({
         width: '90%',
         alignItems: 'center',
         alignContent: 'center'
-    },
-    submitButtonText: {
-        fontSize: 18,
-        alignItems: 'center',
-        color: 'white',
     },
     answerContainer: {
         padding: 10,
@@ -208,10 +149,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderRadius: 25,
         backgroundColor: 'red'
-    },
-    pressableItem: {
-        width: '100%',
-        height: '100%'
     },
     centeredView: {
         flex: 1,
@@ -237,5 +174,19 @@ const styles = StyleSheet.create({
     },
     closeButtonText: {
         color: "#fff"
+    },
+    pressableItem: {
+        flexDirection: 'row'
+    },
+    answerIcon: {
+        alignSelf: 'center',
+        paddingRight: 10
+    },
+    questionText: {
+        width: '85%',
+        alignSelf: 'center',
+    },
+    listStyle: {
+        width: '100%'
     }
 });

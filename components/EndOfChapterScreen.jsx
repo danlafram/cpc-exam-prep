@@ -9,8 +9,6 @@ import storage from "../storage";
 export default function EndOfChapterScreen({ route, navigation }) {
   const { currentChapterIndex, correctAnswers, studyMode, wrongAnswers } = route.params;
 
-  console.log('wrongAnwers', wrongAnswers)
-
   const data = useContext(CertificationContext)
 
   // Navigate to the next chapter.
@@ -48,7 +46,7 @@ export default function EndOfChapterScreen({ route, navigation }) {
   }
 
   const handleViewAnswers = () => {
-    navigation.replace('Answers', {
+    navigation.navigate('Answers', {
       selectedChapterIndex: currentChapterIndex,
       wrongAnswers
     })
@@ -69,8 +67,6 @@ export default function EndOfChapterScreen({ route, navigation }) {
           {studyMode === 'exam' &&
             <Text style={styles.subTitleText}>{correctAnswers}/{data.questions[currentChapterIndex].length} correct answers.</Text>
           }
-          {/* TODO: Need to show results page with historic view of right/wrong */}
-
         </View>
         <View style={styles.actionsContainer}>
           <Pressable style={styles.nextButton} onPress={() => handleNextChapter()}>

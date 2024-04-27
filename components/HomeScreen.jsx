@@ -53,7 +53,7 @@ export default function HomeScreen({ navigation }) {
         <Pressable style={styles.settingButton} onPress={() => navigation.navigate('Settings')}>
           <FontAwesome5 name="cog" size={24} color="white" />
         </Pressable>
-        <Text style={styles.titleText}>CPB Exam Preperation</Text>
+        <Text style={styles.titleText}>CPB Exam Preparation</Text>
         <Text style={styles.subTitleText}>Use these questions to prep for your Certified Professional Biller exam</Text>
       </View>
       <View style={styles.chapterTitleContainer}>

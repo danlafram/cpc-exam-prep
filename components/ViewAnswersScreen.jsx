@@ -31,7 +31,6 @@ export default function ViewAnswersScreen({ route }) {
     };
 
     const handleItemClick = (index) => {
-        console.log('handling click')
         setSelectedQuestion(index)
         setModalVisible(true)
     }
@@ -56,7 +55,7 @@ export default function ViewAnswersScreen({ route }) {
             >
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
-                        <Text style={styles.questionText}>{data.questions[selectedChapterIndex][selectedQuestion]?.question}</Text>
+                        <Text style={styles.modalQuestionText}>{data.questions[selectedChapterIndex][selectedQuestion]?.question}</Text>
                         <View style={styles.questionsContainer}>
                             {
                                 data.questions[selectedChapterIndex][selectedQuestion]?.answers.map((answer) =>
@@ -84,17 +83,15 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         padding: 10,
     },
-    questionText: {
-        fontSize: 25,
-    },
     correctAnswer: {
         fontSize: 20,
         backgroundColor: '#00FF7F',
-
+        padding: 10
     },
     genericAnswer: {
         fontSize: 16,
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        padding: 5
     },
     container: {
         flex: 1,
@@ -182,8 +179,13 @@ const styles = StyleSheet.create({
         paddingRight: 10
     },
     questionText: {
-        width: '85%',
         alignSelf: 'center',
+    },
+    modalQuestionText: {
+        alignSelf: 'center',
+        fontWeight: 'bold',
+        fontSize: 18,
+        lineHeight: 25
     },
     listStyle: {
         width: '100%'

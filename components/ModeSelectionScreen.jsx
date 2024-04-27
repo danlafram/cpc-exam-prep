@@ -8,7 +8,7 @@ export default function ModeSelectionScreen({ navigation, route }) {
     const { selectedChapterIndex } = route.params;
 
     const [showNextButton, setShowNextButton] = useState(false)
-    const [selectedAnswer, setSelectedAnswer] = useState('');
+    const [selectedAnswer, setSelectedAnswer] = useState(null);
 
     const handleModeSelect = (mode) => {
         setSelectedAnswer(mode)
@@ -57,11 +57,10 @@ export default function ModeSelectionScreen({ navigation, route }) {
                 </Pressable>
             </View>
             <View style={styles.submitContainer}>
-                {showNextButton &&
-                    <Pressable disabled={selectedAnswer === null} style={styles.submitButton} onPress={() => handleSubmit()}>
+                    <Pressable disabled={!showNextButton && selectedAnswer === null} 
+                                style={!showNextButton && selectedAnswer === null ? styles.disabledButton : styles.submitButton} onPress={() => handleSubmit()}>
                         <Text style={styles.submitButtonText}>Submit</Text>
                     </Pressable>
-                }
             </View>
         </View>
     );
@@ -163,6 +162,15 @@ const styles = StyleSheet.create({
         width: '90%',
         alignItems: 'center',
         alignContent: 'center'
+    },
+    disabledButton: {
+        width: '90%',
+        margin: 5,
+        paddingVertical: 12,
+        paddingHorizontal: 32,
+        borderRadius: 4,
+        elevation: 3,
+        opacity: 0
     },
     submitButtonText: {
         fontSize: 18,

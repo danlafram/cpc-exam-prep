@@ -7,12 +7,12 @@ import { CertificationContext } from '../contexts/CertificationContext';
 import storage from "../storage";
 
 const fontAwesome5Icons = [
-  "list",
-  "pencil-ruler",
-  "hospital-symbol",
+  "clinic-medical",
+  "user-secret",
   "receipt",
-  "money-bill",
-  "file-code"
+  "list",
+  "laptop-medical",
+  "balance-scale"
 ]
 
 export default function HomeScreen({ navigation }) {
@@ -53,8 +53,8 @@ export default function HomeScreen({ navigation }) {
         <Pressable style={styles.settingButton} onPress={() => navigation.navigate('Settings')}>
           <FontAwesome5 name="cog" size={24} color="white" />
         </Pressable>
-        <Text style={styles.titleText}>CPB Exam Preparation</Text>
-        <Text style={styles.subTitleText}>Use these questions to prep for your Certified Professional Biller exam</Text>
+        <Text style={styles.titleText}>CPC Exam Preparation</Text>
+        <Text style={styles.subTitleText}>Use these questions to prep for your Certified Professional Coder exam</Text>
       </View>
       <View style={styles.chapterTitleContainer}>
         <Text style={styles.chapterTitleText}>Chapters</Text>

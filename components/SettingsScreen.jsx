@@ -18,6 +18,10 @@ export default function SettingScreen({ route, navigation }) {
             key: 'study-mode'
         });
 
+        // await storage.remove({
+        //     key: 'certData'
+        // });
+
         navigation.dispatch(
             CommonActions.reset({
               index: 0,

@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
         fontSize: 25
     },
     modesContainer: {
-        flex: 3,
+        flex: 4,
         backgroundColor: '#e3e1de',
         width: '100%',
         height: '100%',
@@ -112,11 +112,11 @@ const styles = StyleSheet.create({
     button: {
         marginTop: 30,
         paddingVertical: 12,
-        paddingHorizontal: 32,
+        paddingHorizontal: 15,
         borderRadius: 4,
         elevation: 3,
         backgroundColor: '#f8f6f2',
-        width: '45%',
+        width: '55%',
         height: '35%',
         alignItems: 'center',
         justifyContent: 'space-around',

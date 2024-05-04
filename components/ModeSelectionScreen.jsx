@@ -124,11 +124,11 @@ const styles = StyleSheet.create({
     selectedButton: {
         marginTop: 30,
         paddingVertical: 12,
-        paddingHorizontal: 32,
+        paddingHorizontal: 15,
         borderRadius: 4,
         elevation: 3,
         backgroundColor: '#f8f6f2',
-        width: '45%',
+        width: '55%',
         height: '35%',
         alignItems: 'center',
         justifyContent: 'space-around',

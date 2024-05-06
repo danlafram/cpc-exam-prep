@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "CPC Certification Prep",
-    "slug": "cpc-cpb-certification-prep",
+    "slug": "cpc-certification-prep",
     "version": "1.2.0",
     "privacy": "unlisted",
     "orientation": "portrait",
@@ -17,21 +17,22 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.spoke-dev-cpc-cpb-certification-prep"
+      "bundleIdentifier": "com.spoke-dev-cpc-certification-prep"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.danlafram16.cpccpbcertificationprep"
+      "package": "com.danlafram16.cpccertificationprep"
     },
     "web": {
       "favicon": "./assets/icon.png"
     },
+    "owner": "danlafram16",
     "extra": {
       "eas": {
-        "projectId": "27be65dc-e20e-4cd4-a34f-82210f683c35"
+        "projectId": "715c7318-6a53-4fc5-87e6-cd2ec3b4a1a3"
       }
     }
   }

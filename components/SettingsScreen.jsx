@@ -17,7 +17,9 @@ export default function SettingScreen({ navigation }) {
         await storage.remove({
             key: 'study-mode'
         });
-
+        // TODO: Think if this is necessary
+        // It allows users to clear the ordering since quiz API returns random ordering of questions
+        // for every call made. i.e no 2 people should have the same ordering.
         await storage.remove({
             key: 'certData'
         });

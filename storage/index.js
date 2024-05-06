@@ -19,9 +19,7 @@ const storage = new Storage({
 storage.sync = {
   async certData(){
     try{
-      console.log('process.env.EXPO_PUBLIC_API_URL', process.env.EXPO_PUBLIC_API_URL)
-      console.log(apiUrl)
-      const res = await axios.get(`http://localhost:8000/api/quiz/2`)
+      const res = await axios.get(`${apiUrl}/api/quiz/2`)
       storage.save({
         key: 'certData',
         data: res.data

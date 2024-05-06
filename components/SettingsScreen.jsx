@@ -5,7 +5,7 @@ import { CommonActions } from '@react-navigation/native';
 import storage from "../storage";
 import { CertificationContext } from '../contexts/CertificationContext';
 
-export default function SettingScreen({ route, navigation }) {
+export default function SettingScreen({ navigation }) {
 
     const data = useContext(CertificationContext)
 
@@ -18,9 +18,9 @@ export default function SettingScreen({ route, navigation }) {
             key: 'study-mode'
         });
 
-        // await storage.remove({
-        //     key: 'certData'
-        // });
+        await storage.remove({
+            key: 'certData'
+        });
 
         navigation.dispatch(
             CommonActions.reset({

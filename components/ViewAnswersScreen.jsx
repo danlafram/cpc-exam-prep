@@ -180,6 +180,7 @@ const styles = StyleSheet.create({
     },
     questionText: {
         alignSelf: 'center',
+        width: '90%'
     },
     modalQuestionText: {
         alignSelf: 'center',

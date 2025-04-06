@@ -19,7 +19,8 @@ const storage = new Storage({
 storage.sync = {
   async certData(){
     try{
-      const res = await axios.get(`${apiUrl}/api/quiz/2`)
+      const quizName = "Certified Professional Coder";
+      const res = await axios.get(`${apiUrl}/api/search?quiz=${quizName}`)
       storage.save({
         key: 'certData',
         data: res.data

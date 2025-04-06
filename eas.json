@@ -16,7 +16,7 @@
     },
     "production": {
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://certification-engine-ff260c9900c4.herokuapp.com"
+        "EXPO_PUBLIC_API_URL": "https://certificaitonengine.ca/"
       }
     }
   },
